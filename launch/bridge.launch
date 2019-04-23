@@ -11,6 +11,7 @@
 
   <!-- Launch Realsense Camera -->
   <include file="$(find realsense2_camera)/launch/rs_d400_and_t265.launch" >
+    <arg name="serial_no_camera1"    			value="905312110809"/>
   </include>
 
   <env name="ROSCONSOLE_CONFIG_FILE" value="$(find PX4_realsense_bridge)/resource/custom_rosconsole.conf"/>
