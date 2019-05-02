@@ -3,21 +3,15 @@
 using namespace bridge;
 
 int main(int argc, char** argv) {
+  ros::init(argc, argv, "PX4_realsense_bridge_node");
+  ros::NodeHandle nh("~");
+  PX4_Realsense_Bridge Brigde(nh);
 
-	ros::init(argc, argv, "PX4_realsense_bridge_node");
-	ros::NodeHandle nh("~");
-	PX4_Realsense_Bridge Brigde(nh);
+  while (ros::ok()) {
+    ros::spinOnce();
 
-
-
-
-		while (ros::ok()){
-
-			ros::spinOnce();
-
-
-		}
-
+    Brigde.publishTF();
+  }
 
   return 0;
 }

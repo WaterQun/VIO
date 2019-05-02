@@ -6,18 +6,20 @@
   <arg name="tgt_component" default="1" />
 
   <!-- Launch static transform publishers -->
-  <node pkg="tf" type="static_transform_publisher" name="tf_depth_camera"
-          args="0 0 0 0 0 0 fcu camera_link 10"/>
+  <node pkg="tf" type="static_transform_publisher" name="tf_new_cam_frame"
+          args="0 0.02 0 3.1415 0 0 camera_link new_cam_pose_frame 1000"/>
+          
+  <node pkg="tf" type="static_transform_publisher" name="tf_cam_fcu"
+          args="0 0 0 0 0 0 fcu camera_link 1000"/>
 
   <!-- Launch Realsense Camera -->
-  <include file="$(find realsense2_camera)/launch/rs_d400_and_t265.launch" >
-    <arg name="serial_no_camera1"    			value="905312110809"/>
+  <include file="$(find realsense2_camera)/launch/rs_t265.launch" >
   </include>
 
   <env name="ROSCONSOLE_CONFIG_FILE" value="$(find PX4_realsense_bridge)/resource/custom_rosconsole.conf"/>
-  <arg name="input_topic" default="[/initialpose]"/>
+  <arg name="input_topic" default="[/camera/odom/sample]"/>
 
-  <!-- Launch Local Planner -->
+  <!-- Bridge -->
   <node name="PX4_realsense_bridge_node" pkg="PX4_realsense_bridge" type="PX4_realsense_bridge_node" output="screen" >
     <rosparam param="input_topic" subst_value="True">$(arg input_topic)</rosparam>
   </node>
