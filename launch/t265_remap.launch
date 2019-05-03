@@ -1,0 +1,7 @@
+<launch>
+
+  <!-- Launch Realsense Camera -->
+  <remap from="/camera/odom/sample" to="/mavros/odometry/odom"/>
+  <include file="$(find realsense2_camera)/launch/demo_t265.launch" />
+
+</launch>
