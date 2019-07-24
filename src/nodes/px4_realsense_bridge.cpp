@@ -47,7 +47,11 @@ void PX4_Realsense_Bridge::odomCallback(const nav_msgs::Odometry& msg) {
   last_system_status_ = system_status_;
 
   // check confidence in vision estimate by looking at covariance
-  if( (double)msg.pose.covariance[0] == (double)0.1 ) // low confidence
+  if( msg.pose.covariance[0] > 0.1 ) // low confidence -> reboot companion
+  {
+    system_status_ = MAV_STATE::MAV_STATE_FLIGHT_TERMINATION;
+  }
+  else if( msg.pose.covariance[0] == 0.1 ) // medium confidence
   {
     system_status_ = MAV_STATE::MAV_STATE_CRITICAL;
   }
@@ -60,12 +64,10 @@ void PX4_Realsense_Bridge::odomCallback(const nav_msgs::Odometry& msg) {
     ROS_WARN_STREAM("Unexpected vision sensor variance");
   }  
 
-  // publish system status immediately if falling from high to low confidence
-  if( last_system_status_ == MAV_STATE::MAV_STATE_ACTIVE &&
-      system_status_ == MAV_STATE::MAV_STATE_CRITICAL )
+  // publish system status immediately if it changed
+  if( last_system_status_ != system_status_ )
   {
     publishSystemStatus();
-    ROS_WARN_STREAM("Vision Confidence has degraded");
   }
 
 }
