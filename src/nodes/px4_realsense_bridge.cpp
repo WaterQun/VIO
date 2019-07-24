@@ -19,15 +19,66 @@ PX4_Realsense_Bridge::PX4_Realsense_Bridge(const ros::NodeHandle& nh)
   // publishers
   mavros_odom_pub_ =
       nh_.advertise<nav_msgs::Odometry>("/mavros/odometry/out", 10);
+  mavros_system_status_pub_ =
+      nh_.advertise<mavros_msgs::CompanionProcessStatus>("/mavros/companion_process/status", 1);
+
+  ros::Rate rate(1);
+
+  while( ros::ok() )
+  {
+    publishSystemStatus();
+    ros::spinOnce();
+    rate.sleep();
+  }
+
 };
 
 PX4_Realsense_Bridge::~PX4_Realsense_Bridge() { delete tf_listener_; }
 
 
 void PX4_Realsense_Bridge::odomCallback(const nav_msgs::Odometry& msg) {
+
+  // publish odometry msg
   nav_msgs::Odometry output = msg;
   output.header.frame_id = "local_origin";
   output.child_frame_id = "camera_downward";
   mavros_odom_pub_.publish(output);
+
+  last_system_status_ = system_status_;
+
+  // check confidence in vision estimate by looking at covariance
+  if( (double)msg.pose.covariance[0] == (double)0.1 ) // low confidence
+  {
+    system_status_ = MAV_STATE::MAV_STATE_CRITICAL;
+  }
+  else if( msg.pose.covariance[0] == 0.01 ) // high confidence
+  {
+    system_status_ = MAV_STATE::MAV_STATE_ACTIVE;
+  }
+  else
+  {
+    ROS_WARN_STREAM("Unexpected vision sensor variance");
+  }  
+
+  // publish system status immediately if falling from high to low confidence
+  if( last_system_status_ == MAV_STATE::MAV_STATE_ACTIVE &&
+      system_status_ == MAV_STATE::MAV_STATE_CRITICAL )
+  {
+    publishSystemStatus();
+    ROS_WARN_STREAM("Vision Confidence has degraded");
+  }
+
 }
+
+void PX4_Realsense_Bridge::publishSystemStatus(){
+  
+  mavros_msgs::CompanionProcessStatus status_msg;
+
+  status_msg.header.stamp = ros::Time::now();
+  status_msg.component = 197;  // MAV_COMP_ID_VISUAL_INERTIAL_ODOMETRY
+  status_msg.state = (int)system_status_;
+
+  mavros_system_status_pub_.publish(status_msg);
+}
+
 }
