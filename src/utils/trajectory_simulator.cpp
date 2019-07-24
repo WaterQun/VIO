@@ -1,4 +1,4 @@
-#include "../../include/PX4_realsense_bridge/trajectory_simulator.h"
+#include "../../include/px4_realsense_bridge/trajectory_simulator.h"
 
 #include <cfloat>
 

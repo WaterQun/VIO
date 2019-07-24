@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(PX4_realsense_bridge)
+project(px4_realsense_bridge)
 
 add_definitions(-std=c++11)
 
@@ -89,7 +89,7 @@ find_package(PCL 1.7 REQUIRED)
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
 #generate_dynamic_reconfigure_options(
-  #cfg/PX4_realsense_bridge_node.cfg
+  #cfg/px4_realsense_bridge_node.cfg
 #)
 
 ###################################
@@ -131,21 +131,21 @@ include_directories(
 # add_library(avoidance
 #   src/${PROJECT_NAME}/avoidance.cpp
 # )
-set(PX4_REALSENSE_BRIDGE_CPP_FILES   "src/nodes/PX4_realsense_bridge.cpp"
-                              "src/nodes/PX4_realsense_bridge_node.cpp"
+set(PX4_REALSENSE_BRIDGE_CPP_FILES   "src/nodes/px4_realsense_bridge.cpp"
+                              "src/nodes/px4_realsense_bridge_node.cpp"
 )
 
-add_library(PX4_realsense_bridge     "${PX4_REALSENSE_BRIDGE_CPP_FILES}")
+add_library(px4_realsense_bridge     "${PX4_REALSENSE_BRIDGE_CPP_FILES}")
 
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-add_dependencies(PX4_realsense_bridge ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(px4_realsense_bridge ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 # add_executable(avoidance_node src/avoidance_node.cpp)
-add_executable(PX4_realsense_bridge_node src/nodes/PX4_realsense_bridge_node.cpp)
+add_executable(px4_realsense_bridge_node src/nodes/px4_realsense_bridge_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -156,8 +156,8 @@ add_executable(PX4_realsense_bridge_node src/nodes/PX4_realsense_bridge_node.cpp
 #   ${catkin_LIBRARIES}
 #   ${PCL_LIBRARIES}
 # )
-target_link_libraries(PX4_realsense_bridge_node
-  PX4_realsense_bridge
+target_link_libraries(px4_realsense_bridge_node
+  px4_realsense_bridge
   ${catkin_LIBRARIES}
   ${YAML_CPP_LIBRARIES})
 

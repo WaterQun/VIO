@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>PX4_realsense_bridge</name>
+  <name>px4_realsense_bridge</name>
   <version>0.0.0</version>
   <description>Avoidance module doing local planning.</description>
 
