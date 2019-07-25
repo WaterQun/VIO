@@ -22,15 +22,6 @@ PX4_Realsense_Bridge::PX4_Realsense_Bridge(const ros::NodeHandle& nh)
   mavros_system_status_pub_ =
       nh_.advertise<mavros_msgs::CompanionProcessStatus>("/mavros/companion_process/status", 1);
 
-  ros::Rate rate(1);
-
-  while( ros::ok() )
-  {
-    publishSystemStatus();
-    ros::spinOnce();
-    rate.sleep();
-  }
-
 };
 
 PX4_Realsense_Bridge::~PX4_Realsense_Bridge() { delete tf_listener_; }

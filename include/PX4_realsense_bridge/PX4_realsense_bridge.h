@@ -26,6 +26,8 @@ class PX4_Realsense_Bridge {
   PX4_Realsense_Bridge(const ros::NodeHandle& nh);
   ~PX4_Realsense_Bridge();
 
+  void publishSystemStatus();
+
  private:
   ros::NodeHandle nh_;
 
@@ -43,7 +45,6 @@ class PX4_Realsense_Bridge {
 
   void odomCallback(const nav_msgs::Odometry& msg);
 
-  void publishSystemStatus();
 };
 }
 #endif  // PX4_REALSENSE_BRIDGE
