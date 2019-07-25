@@ -13,11 +13,11 @@
   <include file="$(find realsense2_camera)/launch/rs_t265.launch" >
   </include>
 
-  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find PX4_realsense_bridge)/resource/custom_rosconsole.conf"/>
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find px4_realsense_bridge)/resource/custom_rosconsole.conf"/>
   <arg name="input_topic" default="[/camera/odom/sample]"/>
 
   <!-- Bridge -->
-  <node name="PX4_realsense_bridge_node" pkg="PX4_realsense_bridge" type="PX4_realsense_bridge_node" output="screen" >
+  <node name="px4_realsense_bridge_node" pkg="px4_realsense_bridge" type="px4_realsense_bridge_node" output="screen" >
     <rosparam param="input_topic" subst_value="True">$(arg input_topic)</rosparam>
   </node>
   
