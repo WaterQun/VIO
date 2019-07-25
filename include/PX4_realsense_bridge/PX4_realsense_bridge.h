@@ -38,8 +38,8 @@ class PX4_Realsense_Bridge {
   ros::Publisher mavros_odom_pub_;
   ros::Publisher mavros_system_status_pub_;
 
-  MAV_STATE system_status_;
-  MAV_STATE last_system_status_;
+  MAV_STATE system_status_{MAV_STATE::MAV_STATE_UNINIT};
+  MAV_STATE last_system_status_{MAV_STATE::MAV_STATE_UNINIT};
 
   void odomCallback(const nav_msgs::Odometry& msg);
 
