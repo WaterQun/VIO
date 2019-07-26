@@ -6,6 +6,8 @@
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
+#include <thread>
+#include <mutex>
 
 namespace bridge {
 
@@ -28,6 +30,9 @@ class PX4_Realsense_Bridge {
 
   void publishSystemStatus();
 
+  std::thread worker_;
+
+
  private:
   ros::NodeHandle nh_;
 
@@ -42,6 +47,8 @@ class PX4_Realsense_Bridge {
 
   MAV_STATE system_status_{MAV_STATE::MAV_STATE_UNINIT};
   MAV_STATE last_system_status_{MAV_STATE::MAV_STATE_UNINIT};
+
+  std::unique_ptr<std::mutex> status_mutex_;
 
   void odomCallback(const nav_msgs::Odometry& msg);
 
