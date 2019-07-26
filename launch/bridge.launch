@@ -11,10 +11,10 @@
 
   <!-- launch node to throttle images for logging -->
   <node name="drop_image1" pkg="topic_tools" type="drop" output="screen"
-    args="/camera/fisheye1/image_raw  27 30">
+    args="/camera/fisheye1/image_raw  9 10">
   </node>
   <node name="drop_image2" pkg="topic_tools" type="drop" output="screen"
-    args="/camera/fisheye2/image_raw  27 30">
+    args="/camera/fisheye2/image_raw  9 10">
   </node>
 
   <!-- Launch Realsense Camera -->
