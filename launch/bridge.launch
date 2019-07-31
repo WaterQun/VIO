@@ -17,6 +17,10 @@
     args="/camera/fisheye2/image_raw  9 10">
   </node>
 
+  <!-- Throttle odometry messages to a fixed rate -->
+  <node name="foo_throttler" type="throttle" pkg="topic_tools" args="messages /camera/odom/sample 30     /camera/odom/sample_throttled" />
+  </node>
+
   <!-- Launch Realsense Camera -->
   <include file="$(find realsense2_camera)/launch/rs_t265.launch" >
       <arg name="enable_fisheye1"          value="true"/>
@@ -35,7 +39,7 @@
   <node name="px4_realsense_bridge_node" pkg="px4_realsense_bridge" type="px4_realsense_bridge_node" output="screen" >
     <rosparam param="input_topic" subst_value="True">$(arg input_topic)</rosparam>
   </node>
-  
+
   <!-- Launch MavROS -->
   <group ns="$(arg ns)">
       <include file="$(find mavros)/launch/node.launch">

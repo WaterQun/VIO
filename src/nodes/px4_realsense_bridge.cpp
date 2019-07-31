@@ -13,7 +13,7 @@ PX4_Realsense_Bridge::PX4_Realsense_Bridge(const ros::NodeHandle& nh)
 
   // initialize subscribers
   odom_sub_ = nh_.subscribe<const nav_msgs::Odometry&>(
-      "/camera/odom/sample", 10, &PX4_Realsense_Bridge::odomCallback, this);
+      "/camera/odom/sample_throttled", 5, &PX4_Realsense_Bridge::odomCallback, this);
   // publishers
   mavros_odom_pub_ =
       nh_.advertise<nav_msgs::Odometry>("/mavros/odometry/out", 10);
