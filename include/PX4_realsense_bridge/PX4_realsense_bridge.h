@@ -36,9 +36,6 @@ class PX4_Realsense_Bridge {
  private:
   ros::NodeHandle nh_;
 
-  tf::TransformListener* tf_listener_;
-  tf::TransformBroadcaster tf_broadcaster_;
-
   // Subscribers
   ros::Subscriber odom_sub_;
   // Publishers
@@ -51,6 +48,8 @@ class PX4_Realsense_Bridge {
   std::unique_ptr<std::mutex> status_mutex_;
 
   void odomCallback(const nav_msgs::Odometry& msg);
+
+  bool flag_first_pose_received{false};
 
 };
 }

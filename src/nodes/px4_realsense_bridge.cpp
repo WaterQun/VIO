@@ -37,6 +37,8 @@ void PX4_Realsense_Bridge::odomCallback(const nav_msgs::Odometry& msg) {
   output.child_frame_id = "camera_downward";
   mavros_odom_pub_.publish(output);
 
+  flag_first_pose_received = true;
+
   { // lock mutex
     std::lock_guard<std::mutex> status_guard(*(status_mutex_));
 
@@ -83,17 +85,20 @@ void PX4_Realsense_Bridge::publishSystemStatus(){
     
     ros::Duration(1).sleep();
 
-    mavros_msgs::CompanionProcessStatus status_msg;
+    if(flag_first_pose_received == true) { // only send heartbeat if we receive pose estimates
 
-    status_msg.header.stamp = ros::Time::now();
-    status_msg.component = 197;  // MAV_COMP_ID_VISUAL_INERTIAL_ODOMETRY
-  
-    { // lock mutex
-      std::lock_guard<std::mutex> status_guard(*(status_mutex_));
+      mavros_msgs::CompanionProcessStatus status_msg;
 
-      status_msg.state = (int)system_status_;
+      status_msg.header.stamp = ros::Time::now();
+      status_msg.component = 197;  // MAV_COMP_ID_VISUAL_INERTIAL_ODOMETRY
+    
+      { // lock mutex
+        std::lock_guard<std::mutex> status_guard(*(status_mutex_));
 
-      mavros_system_status_pub_.publish(status_msg);
+        status_msg.state = (int)system_status_;
+
+        mavros_system_status_pub_.publish(status_msg);
+      }
     }
   }
 
