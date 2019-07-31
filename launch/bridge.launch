@@ -17,8 +17,9 @@
     args="/camera/fisheye2/image_raw  9 10">
   </node>
 
-  <!-- Throttle odometry messages to a fixed rate -->
-  <node name="foo_throttler" type="throttle" pkg="topic_tools" args="messages /camera/odom/sample 30     /camera/odom/sample_throttled" />
+  <!-- Throttle odometry messages to a fixed rate around 25Hz -->
+  <node name="odom_throttler" type="drop" pkg="topic_tools" 
+    args="/camera/odom/sample 7 8 /camera/odom/sample_throttled" >
   </node>
 
   <!-- Launch Realsense Camera -->
