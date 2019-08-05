@@ -51,6 +51,8 @@ class PX4_Realsense_Bridge {
 
   bool flag_first_pose_received{false};
 
+  ros::Time last_callback_time;
+
 };
 }
 #endif  // PX4_REALSENSE_BRIDGE

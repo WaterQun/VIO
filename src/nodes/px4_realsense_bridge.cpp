@@ -20,6 +20,8 @@ PX4_Realsense_Bridge::PX4_Realsense_Bridge(const ros::NodeHandle& nh)
   mavros_system_status_pub_ =
       nh_.advertise<mavros_msgs::CompanionProcessStatus>("/mavros/companion_process/status", 1);
 
+  last_callback_time = ros::Time::now();
+
   status_mutex_.reset(new std::mutex);
   worker_ = std::thread(&PX4_Realsense_Bridge::publishSystemStatus, this);
 
@@ -74,6 +76,9 @@ void PX4_Realsense_Bridge::odomCallback(const nav_msgs::Odometry& msg) {
 
       mavros_system_status_pub_.publish(status_msg);
     }  
+
+  last_callback_time = ros::Time::now();
+    
   }
 }
 
@@ -85,7 +90,14 @@ void PX4_Realsense_Bridge::publishSystemStatus(){
     
     ros::Duration(1).sleep();
 
-    if(flag_first_pose_received == true) { // only send heartbeat if we receive pose estimates
+    if(flag_first_pose_received == true) { // only send heartbeat if we receive pose estimates at all
+
+      // check if we received an recent update
+      // otherwise let the companion computer restart
+      if( (ros::Time::now()-last_callback_time) > ros::Duration(0.5) ){
+        ROS_WARN_STREAM("Stopped receiving data from T265");
+        system_status_ = MAV_STATE::MAV_STATE_FLIGHT_TERMINATION;
+      }
 
       mavros_msgs::CompanionProcessStatus status_msg;
 
