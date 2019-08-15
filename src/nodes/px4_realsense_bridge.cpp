@@ -35,8 +35,8 @@ void PX4_Realsense_Bridge::odomCallback(const nav_msgs::Odometry& msg) {
 
   // publish odometry msg
   nav_msgs::Odometry output = msg;
-  output.header.frame_id = "local_origin";
-  output.child_frame_id = "camera_downward";
+  output.header.frame_id = msg.header.frame_id;
+  output.child_frame_id = msg.child_frame_id;
   mavros_odom_pub_.publish(output);
 
   flag_first_pose_received = true;
