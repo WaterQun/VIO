@@ -2,7 +2,7 @@
 <package>
   <name>px4_realsense_bridge</name>
   <version>0.0.0</version>
-  <description>Avoidance module doing local planning.</description>
+  <description>Bridge for VIO sensor.</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
