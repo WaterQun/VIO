@@ -42,14 +42,14 @@ These steps contain the installation process, software dependencies and building
 1. Build the package:
 
    ```bash
-   cd ~/catkin_ws/src
+   cd ~/catkin_ws
    catkin build px4_realsense_bridge
    ```
 
-1. Run th ROS node:
+1. Run the ROS node:
 
    ```bash
-   cd ~/catkin_ws/src
+   source ~/catkin_ws/devel/setup.bash
    roslaunch px4_realsense_bridge bridge_mavros.launch
    ```
 
