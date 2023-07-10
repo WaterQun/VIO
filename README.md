@@ -54,7 +54,7 @@ These steps contain the installation process, software dependencies and building
 5. Install catkin and create your catkin workspace directory.
 
    ```bash
-   sudo apt install python-catkin-tools
+   sudo apt install python3-catkin-tools
    mkdir -p ~/vio_ws/src
    ```
 
